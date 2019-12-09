@@ -37,7 +37,10 @@ func testSave(t *testing.T) {
 func TestBook(t *testing.T) {
 	fmt.Println("测试bookdao中的相关函数")
 	//t.Run("测试获取所有图书",testGetBooks)
-	t.Run("测试添加一本图书", testAddBook)
+	//t.Run("测试添加一本图书", testAddBook)
+	//t.Run("测试删除一本图书", testDeleteBook)
+	//t.Run("测试查询一本图书", testGetBook)
+	t.Run("测试修改一本图书", testUpdateBook)
 }
 
 func testGetBooks(t *testing.T) {
@@ -50,13 +53,38 @@ func testGetBooks(t *testing.T) {
 
 func testAddBook(t *testing.T) {
 	book := &model.Book{
-		Title:   "三国演义",
-		Author:  "罗贯中",
-		Price:   88.88,
-		Sales:   100,
-		Stock:   100,
+		Title:   "三国演义66",
+		Author:  "罗贯中66",
+		Price:   66.88,
+		Sales:   60,
+		Stock:   60,
 		ImgPath: "/static/img/default.jpg",
 	}
 	// 调用添加图书的函数
 	AddBook(book)
+	fmt.Println("添加图书成功")
+}
+func testDeleteBook(t *testing.T) {
+	// 调用删除图书的函数
+	DeleteBook("33")
+	fmt.Println("删除图书成功")
+}
+func testGetBook(t *testing.T) {
+	// 调用查询图书的函数
+	book, _ := GetBookByID("38")
+	fmt.Println("查询一本图书成功", book)
+}
+func testUpdateBook(t *testing.T) {
+	book := &model.Book{
+		ID:      36,
+		Title:   "三66",
+		Author:  "罗66",
+		Price:   66.88,
+		Sales:   60,
+		Stock:   60,
+		ImgPath: "/static/img/default.jpg",
+	}
+	// 调用更新图书的函数
+	UpdateBook(book)
+	fmt.Println("修改图书成功")
 }

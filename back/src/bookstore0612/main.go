@@ -17,6 +17,10 @@ func main()  {
 	http.HandleFunc("/regist",controller.Regist) // 注册
 	http.HandleFunc("/checkUserName",controller.CheckUserName) // 验证用户名是否可用**用户名不可重复
 	http.HandleFunc("/getBooks",controller.GetBooks) // 获取所有图书信息
+	http.HandleFunc("/addBook",controller.AddBook) // 获取所有图书信息
+	http.HandleFunc("/deleteBook",controller.DeleteBook) // 获取所有图书信息
+	http.HandleFunc("/toUpdateBookPage",controller.ToUpdateBookPage) // 获取所有图书信息
+	http.HandleFunc("/upduateBookPage",controller.UpdateBookPage) // 获取所有图书信息
 
 
 	// IP及端口的监听
