@@ -40,7 +40,9 @@ func TestBook(t *testing.T) {
 	//t.Run("测试添加一本图书", testAddBook)
 	//t.Run("测试删除一本图书", testDeleteBook)
 	//t.Run("测试查询一本图书", testGetBook)
-	t.Run("测试修改一本图书", testUpdateBook)
+	//t.Run("测试修改一本图书", testUpdateBook)
+	//t.Run("测试分页", testGetPageBooks)
+	t.Run("测试分页，并且有价格范围的", testGetPageBooksByPrice)
 }
 
 func testGetBooks(t *testing.T) {
@@ -87,4 +89,26 @@ func testUpdateBook(t *testing.T) {
 	// 调用更新图书的函数
 	UpdateBook(book)
 	fmt.Println("修改图书成功")
+}
+
+func testGetPageBooks(t *testing.T)  {
+	 page, _ := GetPageBooks("9")
+	fmt.Println("当前页是：",page.PageNo)
+	fmt.Println("总页数是：",page.TotalPageNo)
+	fmt.Println("总记录数是：",page.TotalRecord)
+	fmt.Println("当前页中图书有 ")
+	 for _,v:= range page.Book{
+		 fmt.Println("图书的信息是：",v)
+	 }
+}
+
+func testGetPageBooksByPrice(t *testing.T)  {
+	 page, _ := GetPageBooksByPrice("5","10","30")
+	fmt.Println("带价格范围的当前页是：",page.PageNo)
+	fmt.Println("带价格范围的总页数是：",page.TotalPageNo)
+	fmt.Println("带价格范围的总记录数是：",page.TotalRecord)
+	fmt.Println("带价格范围的当前页中图书有 ")
+	 for _,v:= range page.Book{
+		 fmt.Println("带价格范围的图书的信息是：",v)
+	 }
 }
