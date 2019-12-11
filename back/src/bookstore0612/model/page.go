@@ -9,6 +9,8 @@ type Page struct {
 	TotalRecord int64   // 总记录数，通过查询数据库得到
 	MinPrice    string  // 总记录数，通过查询数据库得到
 	MaxPrice    string  // 总记录数，通过查询数据库得到
+	IsLogin     bool    // 通过session查询，判断是否登录状态,默认是false
+	UserName    string  // 通过session查询，判断是否登录状态
 }
 
 // 判断是否有上一页
@@ -25,16 +27,14 @@ func (p *Page) IsHasNext() bool {
 func (p *Page) GetPrevPageNo() int64 {
 	if p.IsHasPrev() {
 		return p.PageNo - 1
-	} else {
-		return 1
 	}
+	return 1
 }
 
 // 获取下一页
 func (p *Page) GetNextPageNo() int64 {
 	if p.IsHasNext() {
 		return p.PageNo + 1
-	} else {
-		return p.TotalPageNo // 没有下一页，就是最后一页
 	}
+	return p.TotalPageNo // 没有下一页，就是最后一页
 }

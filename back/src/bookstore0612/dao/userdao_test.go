@@ -42,7 +42,7 @@ func TestBook(t *testing.T) {
 	//t.Run("测试查询一本图书", testGetBook)
 	//t.Run("测试修改一本图书", testUpdateBook)
 	//t.Run("测试分页", testGetPageBooks)
-	t.Run("测试分页，并且有价格范围的", testGetPageBooksByPrice)
+	//t.Run("测试分页，并且有价格范围的", testGetPageBooksByPrice)
 }
 
 func testGetBooks(t *testing.T) {
@@ -91,24 +91,48 @@ func testUpdateBook(t *testing.T) {
 	fmt.Println("修改图书成功")
 }
 
-func testGetPageBooks(t *testing.T)  {
-	 page, _ := GetPageBooks("9")
-	fmt.Println("当前页是：",page.PageNo)
-	fmt.Println("总页数是：",page.TotalPageNo)
-	fmt.Println("总记录数是：",page.TotalRecord)
+func testGetPageBooks(t *testing.T) {
+	page, _ := GetPageBooks("9")
+	fmt.Println("当前页是：", page.PageNo)
+	fmt.Println("总页数是：", page.TotalPageNo)
+	fmt.Println("总记录数是：", page.TotalRecord)
 	fmt.Println("当前页中图书有 ")
-	 for _,v:= range page.Book{
-		 fmt.Println("图书的信息是：",v)
-	 }
+	for _, v := range page.Book {
+		fmt.Println("图书的信息是：", v)
+	}
 }
 
-func testGetPageBooksByPrice(t *testing.T)  {
-	 page, _ := GetPageBooksByPrice("5","10","30")
-	fmt.Println("带价格范围的当前页是：",page.PageNo)
-	fmt.Println("带价格范围的总页数是：",page.TotalPageNo)
-	fmt.Println("带价格范围的总记录数是：",page.TotalRecord)
+func testGetPageBooksByPrice(t *testing.T) {
+	page, _ := GetPageBooksByPrice("5", "10", "30")
+	fmt.Println("带价格范围的当前页是：", page.PageNo)
+	fmt.Println("带价格范围的总页数是：", page.TotalPageNo)
+	fmt.Println("带价格范围的总记录数是：", page.TotalRecord)
 	fmt.Println("带价格范围的当前页中图书有 ")
-	 for _,v:= range page.Book{
-		 fmt.Println("带价格范围的图书的信息是：",v)
-	 }
+	for _, v := range page.Book {
+		fmt.Println("带价格范围的图书的信息是：", v)
+	}
+}
+
+func TestSession(t *testing.T) {
+	fmt.Println("测试session相关函数")
+	//t.Run("测试添加session", testAddSession)
+	//t.Run("测试删除session", testDeleteSession)
+	t.Run("测试获取session", testGetSession)
+}
+
+func testAddSession(t *testing.T) {
+	sess := &model.Session{
+		SessionID: "123456987",
+		UserName:  "666",
+		UserID:    1,
+	}
+	AddSession(sess)
+}
+
+func testDeleteSession(t *testing.T) {
+	DeleteSession("123456987")
+}
+func testGetSession(t *testing.T) {
+	sess ,_:= GetSession("ce4bac61-69d3-4f40-6d2a-6211d3933676")
+	fmt.Println("当前session的内容是：",sess)
 }

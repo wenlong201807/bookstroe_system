@@ -15,6 +15,7 @@ func main()  {
 
 	http.HandleFunc("/main",controller.IndexHandler)// 首页显示带分页
 	http.HandleFunc("/login",controller.Login)// 登录接口调用
+	http.HandleFunc("/logout",controller.Logout)// 推出登录接口调用
 	http.HandleFunc("/regist",controller.Regist) // 注册
 	http.HandleFunc("/checkUserName",controller.CheckUserName) // 验证用户名是否可用**用户名不可重复
 	//http.HandleFunc("/getBooks",controller.GetBooks) // 获取所有图书信息

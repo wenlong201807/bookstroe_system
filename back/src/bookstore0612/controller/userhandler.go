@@ -2,9 +2,33 @@ package controller
 
 import (
 	"bookstore0612/dao"
+	"bookstore0612/model"
+	"bookstore0612/utils"
 	"fmt"
 	"net/http"
 )
+
+// 推出登录
+func Logout(w http.ResponseWriter, r *http.Request) {
+	// 获取cookie
+	cookie, _ := r.Cookie("user")
+	fmt.Println("退出登录时获取前端传入的cookie：", cookie)
+	if cookie != nil {
+		// 获取cookie的value
+		cookieValue := cookie.Value
+		// 删除数据库中与之对应的session
+		dao.DeleteSession(cookieValue)
+		// 设置cookie失效**数据库中的失效
+		cookie.MaxAge = -1 // 注意区分session的失效
+		// 发给前端，使前端的cookie失效// 将cookie发送给浏览器
+		http.SetCookie(w, cookie)
+	}
+
+
+
+	// 去首页，分页查看图书信息页面***或者返回登录页面
+	//dao.GetPageBooksByPrice()
+}
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	// 获取用户名和密码
@@ -16,6 +40,35 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	user, _ := dao.CheckUserNameAndPassword(username, password)
 	if user.ID > 0 {
 		// 用户名和密码正确，执行这里
+
+		// 生成UUID作为session的id
+		uuid := utils.CreateUUID()
+		// 创建一个session
+		sess := &model.Session{
+			SessionID: uuid,
+			UserName:  user.Username,
+			UserID:    user.ID,
+		}
+		// 将session保存到数据库中
+		dao.AddSession(sess)
+		// 创建一个cookie，让它与session相关联
+		cookie := http.Cookie{
+			Name:  "user",
+			Value: uuid,
+			//Path:       "",
+			//Domain:     "",
+			//Expires:    time.Time{},
+			//RawExpires: "",
+			//MaxAge:   0,
+			//Secure:     false,
+			HttpOnly: true,
+			//SameSite:   0,
+			//Raw:        "",
+			//Unparsed:   nil,
+		}
+		// 将cookie发送给浏览器
+		http.SetCookie(w, &cookie)
+
 		fmt.Println("用户名和密码正确，执行这里user", user)
 	} else {
 		// 用户名和密码有一个不正确，执行这里
