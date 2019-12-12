@@ -7,12 +7,12 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	fmt.Println("测试bookdao中的方法")
+	fmt.Println("测试搜友大写Test开头中的方法")
 	m.Run()
 }
 
 func TestUser(t *testing.T) {
-	fmt.Println("测试userdao中的函数")
+	//fmt.Println("测试userdao中的函数")
 	// 以下三个测试通过
 	//t.Run("验证用户名和密码", testLogin)
 	//t.Run("验证用户名", testRegist)
@@ -23,19 +23,18 @@ func testLogin(t *testing.T) {
 	user, _ := CheckUserNameAndPassword("admin", "123456")
 	fmt.Println("获取用户信息是：", user)
 }
-
 func testRegist(t *testing.T) {
 	user, _ := CheckUserName("admin")
 	fmt.Println("获取当前用户是：", user)
 }
-
 func testSave(t *testing.T) {
 	SaveUser("admin2", "123456", "zhuweenlong")
 	fmt.Println("保存用户数据成功")
 }
 
+
 func TestBook(t *testing.T) {
-	fmt.Println("测试bookdao中的相关函数")
+	//fmt.Println("测试bookdao中的相关函数")
 	//t.Run("测试获取所有图书",testGetBooks)
 	//t.Run("测试添加一本图书", testAddBook)
 	//t.Run("测试删除一本图书", testDeleteBook)
@@ -52,7 +51,6 @@ func testGetBooks(t *testing.T) {
 		fmt.Printf("第%v本图书的信息是：%v\n", k+1, v)
 	}
 }
-
 func testAddBook(t *testing.T) {
 	book := &model.Book{
 		Title:   "三国演义66",
@@ -90,7 +88,6 @@ func testUpdateBook(t *testing.T) {
 	UpdateBook(book)
 	fmt.Println("修改图书成功")
 }
-
 func testGetPageBooks(t *testing.T) {
 	page, _ := GetPageBooks("9")
 	fmt.Println("当前页是：", page.PageNo)
@@ -101,7 +98,6 @@ func testGetPageBooks(t *testing.T) {
 		fmt.Println("图书的信息是：", v)
 	}
 }
-
 func testGetPageBooksByPrice(t *testing.T) {
 	page, _ := GetPageBooksByPrice("5", "10", "30")
 	fmt.Println("带价格范围的当前页是：", page.PageNo)
@@ -113,11 +109,12 @@ func testGetPageBooksByPrice(t *testing.T) {
 	}
 }
 
+
 func TestSession(t *testing.T) {
-	fmt.Println("测试session相关函数")
+	//fmt.Println("测试session相关函数")
 	//t.Run("测试添加session", testAddSession)
 	//t.Run("测试删除session", testDeleteSession)
-	t.Run("测试获取session", testGetSession)
+	//t.Run("测试获取session", testGetSession)
 }
 
 func testAddSession(t *testing.T) {
@@ -128,11 +125,72 @@ func testAddSession(t *testing.T) {
 	}
 	AddSession(sess)
 }
-
 func testDeleteSession(t *testing.T) {
 	DeleteSession("123456987")
 }
 func testGetSession(t *testing.T) {
-	sess ,_:= GetSession("ce4bac61-69d3-4f40-6d2a-6211d3933676")
-	fmt.Println("当前session的内容是：",sess)
+	sess, _ := GetSession("ce4bac61-69d3-4f40-6d2a-6211d3933676")
+	fmt.Println("当前session的内容是：", sess)
+}
+
+func TestCart(t *testing.T) {
+	//fmt.Println("测试购物车的相关函数")
+	t.Run("测试添加到购物车", testAddCart)
+}
+
+func testAddCart(t *testing.T) {
+	fmt.Println("测试AddCart方法")
+	// 设置要买的第一本书
+	book := &model.Book{
+		ID:      3,
+		//Title:   "",
+		//Author:  "",
+		Price:   27.20,
+		//Sales:   0,
+		//Stock:   0,
+		//ImgPath: "",
+	}
+	fmt.Println("买的第一本书book",book)
+	// 设置要买的第二本书
+	book2 := &model.Book{
+		ID:    4,
+		Price: 23.00,
+	}
+	fmt.Println("买的第二本书book2",book2)
+	// 创建一个购物项切片
+	var cartItems []*model.CartItem
+
+	//创建两个购物项
+	cartItem := &model.CartItem{
+		//CartItem: 0,
+		Book:  book,
+		Count: 10,
+		//Amount:   0,
+		CartID: "666888",
+	}
+	fmt.Println("购物项1==cartItem:",cartItem)
+	cartItems = append(cartItems, cartItem)
+
+	cartItem2 := &model.CartItem{
+		//CartItem: 0,
+		Book:  book2,
+		Count: 10,
+		//Amount:   0,
+		CartID: "666888",
+	}
+	fmt.Println("购物项2==cartItem2:",cartItem2)
+	cartItems = append(cartItems, cartItem2)
+	fmt.Println("总共添加到购物车中的cartItems:",cartItems)
+	// 创建购物车
+	cart := &model.Cart{
+		CartID:    "666888",
+		CartItems: cartItems,
+		//TotalCount:  20,
+		//TotalAmount: 502.00,
+		UserID: 4,
+	}
+	fmt.Println("cart:",cart)
+
+	//将购物车中的商品添加到数据库中
+	AddCart(cart)
 }
