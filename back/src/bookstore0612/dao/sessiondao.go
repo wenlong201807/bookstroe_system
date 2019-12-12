@@ -49,20 +49,20 @@ func GetSession(sessID string) (*model.Session, error) {
 }
 
 // IsLogin 判断用户是否已经登录，false没有登录，true已经登录
-func IsLogin(r *http.Request) bool {
+func IsLogin(r *http.Request) (bool, string) {
 	// 根据cookie的name获取cookie
 	cookie, _ := r.Cookie("user")
 	if cookie != nil {
-		return false
+		// 获取cookie的value
+		cookieValue := cookie.Value
+		// 去数据库中根据cookieValue查询对应的session是否存在
+		session, _ := GetSession(cookieValue)
+		if session.UserID > 0 {
+			// 已经登录
+			return true, session.UserName
+		}
 	}
-	// 获取cookie的value
-	cookieValue := cookie.Value
-	// 去数据库中根据cookieValue查询对应的session是否存在
-	session, _ := GetSession(cookieValue)
-	if session.UserID > 0 {
-		// 已经登录
-		return true
-	}
+
 	// 没有登录
-	return false
+	return false, ""
 }

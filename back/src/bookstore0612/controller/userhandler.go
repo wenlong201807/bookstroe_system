@@ -24,56 +24,66 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		http.SetCookie(w, cookie)
 	}
 
-
-
 	// 去首页，分页查看图书信息页面***或者返回登录页面
 	//dao.GetPageBooksByPrice()
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	// 获取用户名和密码
-	username := r.PostFormValue("username")
-	password := r.PostFormValue("password")
-	fmt.Println("post==username, password。。。", username, password)
-
-	// 调用userdao中验证用户名和密码的方法
-	user, _ := dao.CheckUserNameAndPassword(username, password)
-	if user.ID > 0 {
-		// 用户名和密码正确，执行这里
-
-		// 生成UUID作为session的id
-		uuid := utils.CreateUUID()
-		// 创建一个session
-		sess := &model.Session{
-			SessionID: uuid,
-			UserName:  user.Username,
-			UserID:    user.ID,
-		}
-		// 将session保存到数据库中
-		dao.AddSession(sess)
-		// 创建一个cookie，让它与session相关联
-		cookie := http.Cookie{
-			Name:  "user",
-			Value: uuid,
-			//Path:       "",
-			//Domain:     "",
-			//Expires:    time.Time{},
-			//RawExpires: "",
-			//MaxAge:   0,
-			//Secure:     false,
-			HttpOnly: true,
-			//SameSite:   0,
-			//Raw:        "",
-			//Unparsed:   nil,
-		}
-		// 将cookie发送给浏览器
-		http.SetCookie(w, &cookie)
-
-		fmt.Println("用户名和密码正确，执行这里user", user)
+	// 判断是否已经登录
+	flag, _ := dao.IsLogin(r)
+	if flag {
+		// 已经登录了
+		fmt.Println("您已经是登录状态了，直接跳转至首页吧")
+		// 直接跳转到首页去，不用再生成seesion，cookie了
 	} else {
-		// 用户名和密码有一个不正确，执行这里
-		fmt.Println("用户名和密码有一个不正确，执行这里user", user)
+		// 之前没有登录的
+		// 需要第一次进行登录，再后续操作
+		// 获取用户名和密码
+		username := r.PostFormValue("username")
+		password := r.PostFormValue("password")
+		fmt.Println("post==username, password。。。", username, password)
+
+		// 调用userdao中验证用户名和密码的方法
+		user, _ := dao.CheckUserNameAndPassword(username, password)
+		if user.ID > 0 {
+			// 用户名和密码正确，执行这里
+
+			// 生成UUID作为session的id
+			uuid := utils.CreateUUID()
+			// 创建一个session
+			sess := &model.Session{
+				SessionID: uuid,
+				UserName:  user.Username,
+				UserID:    user.ID,
+			}
+			// 将session保存到数据库中
+			dao.AddSession(sess)
+			// 创建一个cookie，让它与session相关联
+			cookie := http.Cookie{
+				Name:  "user",
+				Value: uuid,
+				//Path:       "",
+				//Domain:     "",
+				//Expires:    time.Time{},
+				//RawExpires: "",
+				//MaxAge:   0,
+				//Secure:     false,
+				HttpOnly: true,
+				//SameSite:   0,
+				//Raw:        "",
+				//Unparsed:   nil,
+			}
+			// 将cookie发送给浏览器
+			http.SetCookie(w, &cookie)
+
+			fmt.Println("用户名和密码正确，执行这里user", user)
+		} else {
+			// 用户名和密码有一个不正确，执行这里
+			fmt.Println("用户名和密码有一个不正确，执行这里user", user)
+		}
+
 	}
+
 }
 
 func Regist(w http.ResponseWriter, r *http.Request) {

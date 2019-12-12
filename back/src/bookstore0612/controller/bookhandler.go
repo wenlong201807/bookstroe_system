@@ -47,23 +47,19 @@ func GetPageBooksByPrice(w http.ResponseWriter, r *http.Request) {
 		page.MaxPrice = maxPrice
 	}
 
-	// 获取前端返回的cookie
-	cookie, _ := r.Cookie("user")
-	if cookie != nil {
-		// 获取cookie的value
-		cookieValue := cookie.Value
-		// 去数据库中根据cookieValue查询对应的session是否存在
-		session, _ := dao.GetSession(cookieValue)
-		if session.UserID > 0 {
-			// 已经登录，
-			// 设置page中的IsLogin字段和UserName字段
-			// 这个为前后端不分离的操作流程
-			page.UserName = session.UserName
-			page.IsLogin = true
-		} else {
-			// 没有登录
-		}
+	// 调用IsLogin函数判断是否已经登录
+	flag ,userName:= dao.IsLogin(r)
+
+	if flag {
+		// 已经登录，
+		// 设置page中的IsLogin字段和UserName字段
+		// 这个为前后端不分离的操作流程
+		page.UserName = userName
+		page.IsLogin = true
+	} else {
+		// 没有登录
 	}
+	//}
 
 	fmt.Println("当前页内容的切片", page)
 	for _, v := range page.Book { // 打印切片里面的内容???这里为什么是pageBook而不是page
