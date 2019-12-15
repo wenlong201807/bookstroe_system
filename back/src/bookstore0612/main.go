@@ -26,6 +26,10 @@ func main()  {
 	http.HandleFunc("/toUpdateBookPage",controller.ToUpdateBookPage) // 获取所有图书信息
 	http.HandleFunc("/upduateBookPage",controller.UpdateBookPage) // 获取所有图书信息
 
+	http.HandleFunc("/addBook2Cart",controller.AddBook2Cart) // 添加图书到购物车
+
+
+
 
 	// IP及端口的监听
 	//http.ListenAndServe(":8080",nil)

@@ -133,9 +133,13 @@ func testGetSession(t *testing.T) {
 	fmt.Println("当前session的内容是：", sess)
 }
 
+
 func TestCart(t *testing.T) {
 	//fmt.Println("测试购物车的相关函数")
-	t.Run("测试添加到购物车", testAddCart)
+	//t.Run("测试添加到购物车", testAddCart)
+	//t.Run("测试根据图书的id和购物车id获取对应的购物项", testGetCartItemByBookIDAndCartID)
+	//t.Run("测试根据购物车的id获取所有购物的购物项", testGetCartItemByCartID)
+	t.Run("测试根据用户的id获取对应的购物车", testGetCartByUserID)
 }
 
 func testAddCart(t *testing.T) {
@@ -194,3 +198,21 @@ func testAddCart(t *testing.T) {
 	//将购物车中的商品添加到数据库中
 	AddCart(cart)
 }
+func testGetCartItemByBookIDAndCartID(t *testing.T)  {
+	cartItem,_ := GetCartItemByBookIDAndCartID("3","666888")
+	fmt.Println("图书id=3,购物车id=666888的购物项的信息是：",cartItem)
+}
+func testGetCartItemByCartID(t *testing.T)  {
+	cartItems,_ := GetCartItemByCartID("666888")
+	for k,v := range cartItems{
+		fmt.Printf("第%v个购物项是：%v\n",k+1,v)
+	}
+}
+func testGetCartByUserID(t *testing.T)  {
+	cart,_ := GetCartByUserID(3)
+	fmt.Println("用户id=3的购物车的信息是",cart)
+}
+
+
+
+
