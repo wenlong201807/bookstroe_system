@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"bookstore0612/commons"
 	"bookstore0612/dao"
 	"bookstore0612/model"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -87,6 +89,16 @@ func GetPageBooks(w http.ResponseWriter, r *http.Request) {
 	page, _ := dao.GetPageBooks(pageNo)
 	fmt.Println("当前页内容的切片", page)
 	// 执行
+
+	// 自定义返回数据格式**如何定义结构体
+	//var er *model.Page = page
+	//er.Rows = page
+	//er.Total = 7
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(page)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 添加图书
@@ -117,6 +129,16 @@ func AddBook(w http.ResponseWriter, r *http.Request) {
 	//	GetBooks(w,r)
 	//	GetPageBooks(w,r)
 
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "添加成功"
+	er.Status = 8
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
+
 }
 
 // 删除图书
@@ -129,6 +151,16 @@ func DeleteBook(w http.ResponseWriter, r *http.Request) {
 	// 调用GetBook处理函数，再查询一次数据库
 	//	GetBooks(w,r)
 	//	GetPageBooks(w,r)
+
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "删除成功"
+	er.Status = 9
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 更新图书前***将原有的图书信息返回页面****可以不用这一步骤了
@@ -142,6 +174,7 @@ func ToUpdateBookPage(w http.ResponseWriter, r *http.Request) {
 	// 返回给前端页面展示将要修改的信息
 	//	GetBooks(w,r)
 	//	GetPageBooks(w,r)
+
 }
 
 func UpdateBookPage(w http.ResponseWriter, r *http.Request) {
@@ -173,6 +206,15 @@ func UpdateBookPage(w http.ResponseWriter, r *http.Request) {
 	// 调用GetBook处理函数，再查询一次数据库
 	//	GetBooks(w,r)
 	//	GetPageBooks(w,r)
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "修改成功"
+	er.Status = 10
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 

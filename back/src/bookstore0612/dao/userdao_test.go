@@ -7,7 +7,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	fmt.Println("测试搜友大写Test开头中的方法")
+	//fmt.Println("测试搜友大写Test开头中的方法")
 	m.Run()
 }
 
@@ -139,7 +139,10 @@ func TestCart(t *testing.T) {
 	//t.Run("测试添加到购物车", testAddCart)
 	//t.Run("测试根据图书的id和购物车id获取对应的购物项", testGetCartItemByBookIDAndCartID)
 	//t.Run("测试根据购物车的id获取所有购物的购物项", testGetCartItemByCartID)
-	t.Run("测试根据用户的id获取对应的购物车", testGetCartByUserID)
+	//t.Run("测试根据用户的id获取对应的购物车", testGetCartByUserID)
+	//t.Run("测试根据图书的id和购物车中的id以及图书的数量，更新购物项中图书的数量", testUpdateBookCount)
+	//t.Run("测试先删除购物项，然后删除购物车", testDeleteCartByCartID)
+	t.Run("测试删除购物项", testDeleteCartItemByID)
 }
 
 func testAddCart(t *testing.T) {
@@ -212,7 +215,18 @@ func testGetCartByUserID(t *testing.T)  {
 	cart,_ := GetCartByUserID(3)
 	fmt.Println("用户id=3的购物车的信息是",cart)
 }
-
+func testUpdateBookCount(t *testing.T)  {
+	//UpdateBookCount(180,4,"666888") // 参数已经修改了
+	//fmt.Println("更新原有图书数量成功")
+}
+func testDeleteCartByCartID(t *testing.T)  { // 测试成功，数据库没有更新，44---12分钟
+	DeleteCartByCartID("ef41bb78-88d6-45f6-76f3-16a5052a80bb")
+	fmt.Println("先删除购物项，然后删除购物车**成功")
+}
+func testDeleteCartItemByID(t *testing.T)  { // 测试成功，数据库没有更新，44---12分钟
+	DeleteCartItemByID("21")
+	fmt.Println("删除其中一个购物项**成功")
+}
 
 
 
