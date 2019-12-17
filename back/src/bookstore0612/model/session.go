@@ -6,4 +6,5 @@ type Session struct {
 	UserName  string
 	UserID    int
 	Cart      *Cart // 前后端不分离的时候需要使用
+	OrderID   string
 }

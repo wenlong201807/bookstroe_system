@@ -30,6 +30,9 @@ func main()  {
 	http.HandleFunc("/getCartInfo",controller.GetCartInfo) // 添加图书到购物车
 	http.HandleFunc("/deleteCart",controller.DeleteCart) // 清空购物车
 	http.HandleFunc("/deleteCartItem",controller.DeleteCartItem) // 删除购物项（购物车里面的一种商品）
+	http.HandleFunc("/updateCartItem",controller.UpdateCartItem) // 更新购物项（购物车里面的一种商品）
+	http.HandleFunc("/checkout",controller.Checkout) // 去结账
+	http.HandleFunc("/getorders",controller.GetOrders) // 获取所有订单
 
 
 

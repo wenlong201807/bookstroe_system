@@ -54,6 +54,17 @@ func AddBook2Cart(w http.ResponseWriter, r *http.Request) {
 						//dao.UpdateBookCount(v.Count, v.Book.ID, cart.CartID)
 						dao.UpdateBookCount(v)
 
+						// 返回页面信息
+						// 自定义返回数据格式**如何定义结构体
+						var er commons.StoreResult
+						er.Msg = "当前用户已经有购物车，只需要将该图书所对应的购物项中的数量+1即可"
+						er.Status = 13
+						// 把结构体转换为json数据
+						b, _ := json.Marshal(er)
+						// 设置响应内容为json
+						w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+						w.Write(b)
+
 					}
 				}
 			} else {
@@ -72,6 +83,17 @@ func AddBook2Cart(w http.ResponseWriter, r *http.Request) {
 				cart.CartItems = append(cart.CartItems, cartItem)
 				// .将新创建的购物项添加到购物车保存到数据库中
 				dao.AddCartItem(cartItem)
+
+				// 返回页面信息
+				// 自定义返回数据格式**如何定义结构体
+				var er commons.StoreResult
+				er.Msg = "购物车中的购物项中还没有该图书，此时需要创建一个购物项，并添加到数据库中"
+				er.Status = 12
+				// 把结构体转换为json数据
+				b, _ := json.Marshal(er)
+				// 设置响应内容为json
+				w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+				w.Write(b)
 			}
 			//  不管之前有没有图书对应的购物项，都需要更新总金额与总数量
 			dao.UpdateCart(cart)
@@ -135,6 +157,18 @@ func GetCartInfo(w http.ResponseWriter, r *http.Request) {
 		// 该用户还没有购物车
 	}
 
+	// 返回页面信息
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "根据用户id的信息获取购物车的信息"
+	er.Status = 14
+	er.Data = cart
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
+
 }
 
 // 清空购物车
@@ -144,7 +178,16 @@ func DeleteCart(w http.ResponseWriter, r *http.Request) {
 	//清空购物车
 	dao.DeleteCartByCartID(cartID)
 	// 返回页面提示，删除成功
-	// 再次调用购物车查询剩余购物项
+	// 返回页面信息
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "清空购物车"
+	er.Status = 15
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 删除购物项**难点
@@ -179,13 +222,61 @@ func DeleteCartItem(w http.ResponseWriter, r *http.Request) {
 	// 调用获取购物项信息的函数再次查询购物车信息
 	//GetCartInfo(w,r)
 	// 返回页面信息
-
+	// 返回页面信息
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "删除购物项"
+	er.Status = 16
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 
 }
 
-
-
-
-
-
-
+// 更新购物项的数量
+func UpdateCartItem(w http.ResponseWriter, r *http.Request) {
+	// 获取要更新购物项的id
+	cartItemID := r.FormValue("cartItemId")
+	// 将购物项的id转换为int64
+	iCartItemID, _ := strconv.ParseInt(cartItemID, 10, 64)
+	// 获取用户输入的图书数量
+	bookCount := r.FormValue("bookCount")
+	// 将购物项的id转换为int64
+	iBookCount, _ := strconv.ParseInt(bookCount, 10, 64)
+	// 获取session
+	_, session := dao.IsLogin(r)
+	// 获取用户id
+	userID := session.UserID
+	// 获取该用户的购物车
+	cart, _ := dao.GetCartByUserID(userID)
+	// 获取购物车中的所有购物项
+	cartItems := cart.CartItems
+	// 遍历得到每一个购物项
+	for _, v := range cartItems {
+		// 寻找要删除的购物项
+		if v.CartItemID == iCartItemID {
+			// 这个就是我们要更新的购物项
+			// 将当前购物项中的图书数量设置为用户输入的值
+			v.Count = iBookCount
+			// 更新数据库中该购物项的图书数量和金额小计
+			dao.UpdateBookCount(v)
+		}
+	}
+	// 更新购物车中的图书的总金额和总数量
+	dao.UpdateCart(cart)
+	// 调用获取购物项信息的函数再次查询购物车信息
+	//GetCartInfo(w,r)
+	// 返回页面信息
+	// 返回页面信息
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	er.Msg = "更新购物项"
+	er.Status = 17
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
+}
