@@ -7,6 +7,8 @@ import (
 	"bookstore0612/model"
 	"time"
 	"fmt"
+	"encoding/json"
+	"bookstore0612/commons"
 )
 
 // Checkout 去结账
@@ -63,15 +65,42 @@ func Checkout(w http.ResponseWriter, r *http.Request) {
 	dao.DeleteCartByCartID(cart.CartID)
 	// 将订单号设置到session中
 	session.OrderID = orderID
-
+	fmt.Println("将数据返回前端****")
 	// 将数据返回前端
 	//***
+	//自定义返回数据格式**如何定义结构体**暂时未使用同意结构返回前端
+	//var er *commons.StoreResult
+	//er.Content = orderID
+	//er.Msg = "结账后获取生成的订单号"
+	//er.Status = 19
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(orderID)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 获取所有订单
 func GetOrders(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("获取当前用户cookie：", r.Cookies())
+	//fmt.Println("获取当前用户名username",r.FormValue("username"))
 	// 调用dao中获取所有订单中的函数
 	orders, _ := dao.GetOrders()
 	// 发送到页面展示
-	fmt.Println("获取到的所有订单信息orders：", orders) // 订单索引而已，需要转换成切片
+	fmt.Println("获取到的所有订单信息orders：", orders) // 订单索引而已,前端自己会识别
+	//for k,v := range orders{
+	//	fmt.Println("订单信息是",k+1,v)
+	//}
+
+	// 自定义返回数据格式**如何定义结构体
+	//var er *commons.StoreResult
+	//er.Data = orders
+	//er.Msg = "所有订单信息"
+	//er.Status = 18
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(orders)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }

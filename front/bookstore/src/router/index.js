@@ -15,52 +15,52 @@ const router = new Router({
   mode: 'hash',
   // base: process.env.BASE_URL,
   routes: [{
-      path: '/',
-      name: 'noPage',
-      // component: () => import('@/views/Home'),
-      redirect: '/Login'
-    },
-    {
-      path: '/Home',
-      name: 'Home',
-      component: () => import('@/views/Home'),
-      redirect: '/Home/Book',
-      children: [{
-        path: 'Book',
-        name: 'Book',
-        component: () => import('@/views/Book')
-      }, {
-        path: 'Store',
-        name: 'Store',
-        component: () => import('@/views/Store')
-      }, {
-        path: 'Order',
-        name: 'Order',
-        component: () => import('@/views/Order')
-      }, {
-        path: 'Cart',
-        name: 'Cart',
-        component: () => import('@/views/Cart')
-      }]
+    path: '/',
+    name: 'noPage',
+    // component: () => import('@/views/Home'),
+    redirect: '/Login'
+  },
+  {
+    path: '/Home',
+    name: 'Home',
+    component: () => import('@/views/Home'),
+    redirect: '/Home/Book',
+    children: [{
+      path: 'Book',
+      name: 'Book',
+      component: () => import('@/views/Book')
     }, {
-      path: '/Login',
-      name: 'Login',
-      component: () => import('@/views/Login')
+      path: 'Store',
+      name: 'Store',
+      component: () => import('@/views/Store')
     }, {
-      path: '/Regist',
-      name: 'Regist',
-      component: () => import('@/views/Regist')
+      path: 'Order',
+      name: 'Order',
+      component: () => import('@/views/Order')
     }, {
-      path: '*',
-      // name: 'Regist',
-      component: () => import('@/views/404')
-    }
+      path: 'Cart',
+      name: 'Cart',
+      component: () => import('@/views/Cart')
+    }]
+  }, {
+    path: '/Login',
+    name: 'Login',
+    component: () => import('@/views/Login')
+  }, {
+    path: '/Regist',
+    name: 'Regist',
+    component: () => import('@/views/Regist')
+  }, {
+    path: '*',
+    // name: 'Regist',
+    component: () => import('@/views/404')
+  }
   ]
 })
 // vue 菜单路由重复点击报错
 // https://blog.csdn.net/qq_40190624/article/details/102588258
 const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
+Router.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
