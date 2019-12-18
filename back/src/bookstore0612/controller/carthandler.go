@@ -238,11 +238,11 @@ func DeleteCartItem(w http.ResponseWriter, r *http.Request) {
 // 更新购物项的数量
 func UpdateCartItem(w http.ResponseWriter, r *http.Request) {
 	// 获取要更新购物项的id
-	cartItemID := r.FormValue("cartItemId")
+	cartItemID := r.PostFormValue("cartItemId")
 	// 将购物项的id转换为int64
 	iCartItemID, _ := strconv.ParseInt(cartItemID, 10, 64)
 	// 获取用户输入的图书数量
-	bookCount := r.FormValue("bookCount")
+	bookCount := r.PostFormValue("bookCount")
 	// 将购物项的id转换为int64
 	iBookCount, _ := strconv.ParseInt(bookCount, 10, 64)
 	// 获取session
@@ -266,17 +266,48 @@ func UpdateCartItem(w http.ResponseWriter, r *http.Request) {
 	}
 	// 更新购物车中的图书的总金额和总数量
 	dao.UpdateCart(cart)
+	// 以上为处理后端数据的
+
+	// 以下为返回给前端的数据处理***修改成功
 	// 调用获取购物项信息的函数再次查询购物车信息
+	cart, _ = dao.GetCartByUserID(userID)
+	fmt.Println("购物车中的信息是：", cart)
+	// 获取购物车中的图书的总数量
+	totalCount := cart.TotalCount
+	// 获取购物车中的图书总金额
+	totalAmount := cart.TotalAmount
+
+	var amount float64
+	// 获取购物车中更新的购物项中的金额小计
+	cIs := cart.CartItems
+	for _, v := range cIs {
+		if iCartItemID == v.CartItemID {
+			// 这个就是我们需找的购物项，此时获取当前购物项中的金额小计
+			amount = v.Amount
+		}
+	}
+	// 创建data结构体
+	data := model.Data{
+		Amount:      amount,      // float64
+		TotalAmount: totalAmount, // float64
+		TotalCount:  totalCount,  // int64
+	}
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(data)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
+
 	//GetCartInfo(w,r)
 	// 返回页面信息
 	// 返回页面信息
 	// 自定义返回数据格式**如何定义结构体
-	var er commons.StoreResult
-	er.Msg = "更新购物项"
-	er.Status = 17
-	// 把结构体转换为json数据
-	b, _ := json.Marshal(er)
-	// 设置响应内容为json
-	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
-	w.Write(b)
+	//var er commons.StoreResult
+	//er.Msg = "更新购物项"
+	//er.Status = 17
+	//// 把结构体转换为json数据
+	//b, _ := json.Marshal(er)
+	//// 设置响应内容为json
+	//w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	//w.Write(b)
 }

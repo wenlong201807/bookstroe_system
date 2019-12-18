@@ -27,12 +27,16 @@ func main()  {
 	http.HandleFunc("/upduateBookPage",controller.UpdateBookPage) // 获取所有图书信息
 
 	http.HandleFunc("/addBook2Cart",controller.AddBook2Cart) // 添加图书到购物车
-	http.HandleFunc("/getCartInfo",controller.GetCartInfo) // 添加图书到购物车
+	http.HandleFunc("/getCartInfo",controller.GetCartInfo) // 查看购物车
 	http.HandleFunc("/deleteCart",controller.DeleteCart) // 清空购物车
 	http.HandleFunc("/deleteCartItem",controller.DeleteCartItem) // 删除购物项（购物车里面的一种商品）
 	http.HandleFunc("/updateCartItem",controller.UpdateCartItem) // 更新购物项（购物车里面的一种商品）
 	http.HandleFunc("/checkout",controller.Checkout) // 去结账
 	http.HandleFunc("/getorders",controller.GetOrders) // 获取所有订单
+	http.HandleFunc("/getOrderItemsInfo",controller.GetOrderItemsInfo) // 获取订单详情
+	http.HandleFunc("/getMyOrders",controller.GetMyOrders) // 获取我的订单
+	http.HandleFunc("/sendOrder",controller.SendOrder) // 发货
+	http.HandleFunc("/receiveOrder",controller.ReceiveOrder) // 收货
 
 
 

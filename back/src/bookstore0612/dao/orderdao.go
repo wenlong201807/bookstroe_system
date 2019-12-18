@@ -19,7 +19,7 @@ func AddOrder(order *model.Order) error {
 
 // 获取数据库中所有订单
 func GetOrders() (*model.OrderPage, error) {
-//func GetOrders() ([]*model.Order, error) {
+	//func GetOrders() ([]*model.Order, error) {
 	// 写sql
 	sqlStr := "select id,create_time,total_count,total_amount,state,user_id from orders"
 	// 执行
@@ -45,9 +45,8 @@ func GetOrders() (*model.OrderPage, error) {
 
 	// 创建page
 	var OrderPage = &model.OrderPage{
-		Orders:        orders,
+		Orders: orders,
 		//Total:      len(orders),
-
 	}
 	return OrderPage, nil
 	//return orders, nil
@@ -73,3 +72,34 @@ func GetOrders() (ordersAll []*model.Order, err error) {
 }
 */
 
+// 获取我的订单
+func GetMyOrders(userID int) ([]*model.Order, error) {
+	// 写sql
+	sqlStr := "select id,create_time,total_count,total_amount,state,user_id from orders where user_id=?"
+	// 执行
+	rows, err := utils.Db.Query(sqlStr, userID)
+	if err != nil {
+		return nil, err
+	}
+	// 声明一个切片
+	var orders []*model.Order
+	for rows.Next() {
+		// 创建order
+		order := &model.Order{}
+		// 给order中的字段赋值
+		rows.Scan(&order.OrderID, &order.CreateTime, &order.TotalCount, &order.TotalAmount, &order.State, &order.UserID)
+		// 将order添加到切片中
+		orders = append(orders, order)
+	}
+	return orders, nil
+}
+
+// 更新订单的状态，即 发货与收获  state 状态修改
+func UpdateOrderState(orderID string, state int64) error {
+	sql := "update orders set state=? where id=?"
+	_, err := utils.Db.Exec(sql, state, orderID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

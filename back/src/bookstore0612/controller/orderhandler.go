@@ -104,3 +104,48 @@ func GetOrders(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
 	w.Write(b)
 }
+
+// 获取订单详情
+func GetOrderItemsInfo(w http.ResponseWriter, r *http.Request) {
+	// 获取订单号
+	orderID := r.FormValue("orderId")
+	// 根据订单号调用dao中获取所有订单向的函数
+	orderItems, _ := dao.GetOrderItemsByOrderID(orderID)
+	fmt.Println("订单详情：", orderItems)
+	// 返回页面展示
+}
+
+// 获取我的订单
+func GetMyOrders(w http.ResponseWriter, r *http.Request) {
+	// 获取session
+	_, session := dao.IsLogin(r)
+	// 获取用户id
+	userID := session.UserID
+	// 调用dao中获取用户的所有订单的函数
+	orders, _ := dao.GetMyOrders(userID)
+	// 返回给前端展示
+	fmt.Println("获取我的所有的订单orders：", orders)
+}
+
+// 发货
+func SendOrder(w http.ResponseWriter, r *http.Request)  {
+	// 获取要发货的订单号
+	orderID := r.PostFormValue("orderId")
+	fmt.Println("获取订单号：order ID：",orderID)
+	// 调用dao中的更新订单的状态的函数
+	dao.UpdateOrderState(orderID,1) // 1为发货2为收货
+	// 返回前端信息
+	// 获取所有订单的信息
+
+}
+// 收货
+func ReceiveOrder(w http.ResponseWriter, r *http.Request)  {
+	// 获取要收货的订单号
+	orderID := r.PostFormValue("orderId")
+	fmt.Println("获取订单号：order ID：",orderID)
+	// 调用dao中的更新订单的状态的函数
+	dao.UpdateOrderState(orderID,2) // 1为发货2为收货
+	// 返回前端信息
+	// 获取我的订单信息
+
+}

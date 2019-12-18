@@ -229,7 +229,10 @@ func testDeleteCartItemByID(t *testing.T) { // 测试成功，数据库没有更
 func TestOrder(t *testing.T) {
 	fmt.Println("测试订单相关的函数")
 	//t.Run("测试添订单和订单向", testAddOrder)
-	t.Run("测试查看所有的订单信息", testGetOrders)
+	//t.Run("测试查看所有的订单信息", testGetOrders)
+	//t.Run("测试查看订单项", testGetOrderItems)
+	//t.Run("测试我的订单有：", testGetMyOrders)
+	t.Run("测试我的订单有：", testUpdateOrderState)
 }
 
 func testAddOrder(t *testing.T) {
@@ -277,8 +280,28 @@ func testAddOrder(t *testing.T) {
 	fmt.Println("测试订单，订单项成功")
 }
 func testGetOrders(t *testing.T)  {
-	orders,_:= GetOrders()
-	for k,v := range orders{
-		fmt.Println("订单信息是",k+1,v)
+	//数据结构被修改了
+	//orders,_:= GetOrders()
+	//for k,v := range orders{
+	//	fmt.Println("订单信息是",k+1,v)
+	//}
+}
+func testGetOrderItems(t *testing.T)  {
+	orderItems,_:= GetOrderItemsByOrderID("f8dd1418-fcf5-41d1-7d7c-5f759a7d6ee9")
+	for k,v := range orderItems{
+		fmt.Println("订单项信息",k+1,v)
 	}
+}
+func testGetMyOrders(t *testing.T)  {
+	orders,_:= GetMyOrders(5)
+	for k,v := range orders{
+		fmt.Println("我的订单有：",k+1,v)
+	}
+}
+func testUpdateOrderState(t *testing.T)  {
+	err := UpdateOrderState("ec5acf4f-41b1-4e6a-480c-2757105971ae",1)
+	if err == nil {
+		fmt.Println("更新订单成功：1为发货")
+	}
+
 }
