@@ -7,3 +7,8 @@ type User struct {
 	Password string
 	Email string
 }
+
+// UserPage结构体
+type UserPage struct {
+	Users        []*User
+}

@@ -25,6 +25,7 @@
         </FormItem>
         <FormItem>
           <Button type="primary" @click="regist('formInline')">注册</Button>
+          <Button type="warning" @click="goLogin">去登录</Button>
         </FormItem>
       </Form>
     </div>
@@ -77,6 +78,17 @@ export default {
     }
   },
   methods: {
+    goLogin() {
+      this.$router.push({
+        path: '/Login'
+        // params: {
+        //   page: '1',
+        //   code: '8989',
+        //   username: this.formInline.username
+        // }
+        // this.$route.params.page
+      })
+    },
     regist(name) {
       console.log(this.formInline.username, this.formInline.password)
       this.$refs[name].validate(valid => {

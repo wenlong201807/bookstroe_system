@@ -14,7 +14,7 @@
         </FormItem>
         <FormItem>
           <Button type="primary" @click="login('formInline')">登录</Button>
-
+          <Button type="warning" @click="goRegist">去注册</Button>
         </FormItem>
       </Form>
     </div>
@@ -56,6 +56,17 @@ export default {
     }
   },
   methods: {
+    goRegist() {
+      this.$router.push({
+        path: '/Regist'
+        // params: {
+        //   page: '1',
+        //   code: '8989',
+        //   username: this.formInline.username
+        // }
+        // this.$route.params.page
+      })
+    },
     login(name) {
       console.log(this.formInline.username, this.formInline.password)
       this.$refs[name].validate(valid => {
@@ -73,8 +84,14 @@ export default {
                 // 检验成功 设置登录状态并且跳转到/
                 localStorage.setItem('iview_login', true)
                 localStorage.setItem('username', this.formInline.username)
+                let path = ''
+                if (this.formInline.username !== 'admin') {
+                  path = '/Home/Buyer/Store'
+                } else {
+                  path = '/Home/Admin/Book'
+                }
                 this.$router.push({
-                  path: '/Home/Cart'
+                  path
                   // params: {
                   //   page: '1',
                   //   code: '8989',

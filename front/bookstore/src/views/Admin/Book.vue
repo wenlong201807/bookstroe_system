@@ -5,24 +5,25 @@
     <Page class="page_top" :total="totalCount" :page-size="currentRows" @on-change="changePage" show-elevator show-total />
 
     <Modal v-model="modalAddBook" title="添加图书" footer-hide @on-cancel="cancelAddBook('fromAdd')">
-      <Form ref="fromAdd" :model="fromAddAmend" :rules="rulesAddAmend" :label-width="80">
+      <Form ref="fromAdd" :model="fromAddAmend" :rules="rulesAddAmend" :label-width=80>
         <FormItem label="书名" prop="Title">
-          <Input v-model.trim="fromAddAmend.Title" placeholder="Enter your Title"></Input>
+          <i-input v-model.trim="fromAddAmend.Title" placeholder="Enter your Title"></i-input>
         </FormItem>
         <FormItem label="作者" prop="Author">
-          <Input v-model.trim="fromAddAmend.Author" placeholder="Enter your Author"></Input>
+          <i-input v-model.trim="fromAddAmend.Author" placeholder="Enter your Author"></i-input>
         </FormItem>
         <FormItem label="单价" prop="Price">
-          <Input v-model.trim="fromAddAmend.Price" placeholder="Enter your Price"></Input>
+          <i-input v-model.trim="fromAddAmend.Price" placeholder="Enter your Price"></i-input>
         </FormItem>
         <FormItem label="销量" prop="Sales">
-          <Input v-model.trim="fromAddAmend.Sales" placeholder="Enter your Sales"></Input>
+          <i-input v-model.trim="fromAddAmend.Sales" placeholder="Enter your Sales"></i-input>
         </FormItem>
         <FormItem label="库存" prop="Stock">
-          <Input v-model.trim="fromAddAmend.Stock" placeholder="Enter your Stock"></Input>
+          <i-input v-model.trim="fromAddAmend.Stock" placeholder="Enter your Stock"></i-input>
         </FormItem>
         <FormItem label="图片路径" prop="ImgPath">
-          <Input v-model.trim="fromAddAmend.ImgPath" placeholder="Enter your ImgPath"></Input>
+          <i-input v-model.trim="fromAddAmend.ImgPath" placeholder="Enter your ImgPath">
+          </i-input>
         </FormItem>
 
         <FormItem>
@@ -38,22 +39,22 @@
     <Modal v-model="modalAmendBook" title="修改图书" footer-hide @on-cancel="cancelAmendBook('fromAmend')">
       <Form ref="fromAmend" :model="fromAddAmend" :rules="rulesAddAmend" :label-width="80">
         <FormItem label="书名" prop="Title">
-          <Input v-model.trim="fromAddAmend.Title" placeholder="Enter your Title"></Input>
+          <i-input v-model.trim="fromAddAmend.Title" placeholder="Enter your Title"></i-input>
         </FormItem>
         <FormItem label="作者" prop="Author">
-          <Input v-model.trim="fromAddAmend.Author" placeholder="Enter your Author"></Input>
+          <i-input v-model.trim="fromAddAmend.Author" placeholder="Enter your Author"></i-input>
         </FormItem>
         <FormItem label="单价" prop="Price">
-          <Input v-model.trim="fromAddAmend.Price" placeholder="Enter your Price"></Input>
+          <i-input v-model.trim="fromAddAmend.Price" placeholder="Enter your Price"></i-input>
         </FormItem>
         <FormItem label="销量" prop="Sales">
-          <Input v-model.trim="fromAddAmend.Sales" placeholder="Enter your Sales"></Input>
+          <i-input v-model.trim="fromAddAmend.Sales" placeholder="Enter your Sales"></i-input>
         </FormItem>
         <FormItem label="库存" prop="Stock">
-          <Input v-model.trim="fromAddAmend.Stock" placeholder="Enter your Stock"></Input>
+          <i-input v-model.trim="fromAddAmend.Stock" placeholder="Enter your Stock"></i-input>
         </FormItem>
         <FormItem label="图片路径" prop="ImgPath">
-          <Input v-model.trim="fromAddAmend.ImgPath" placeholder="Enter your ImgPath"></Input>
+          <i-input v-model.trim="fromAddAmend.ImgPath" placeholder="Enter your ImgPath"></i-input>
         </FormItem>
 
         <FormItem>
@@ -362,5 +363,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../styles/common.less';
+@import '../../styles/common.less';
 </style>

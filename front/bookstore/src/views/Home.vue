@@ -1,13 +1,30 @@
 <template>
   <div class="homeContainer">
     <div class="LeftMenu">
-      <Menu @on-select="onSelect" width="210" theme="dark" active-name="/Home/Store" :open-names="['use']">
+      <Menu @on-select="onSelect" width="210" theme="dark" :active-name="currentPath" :open-names="['use']">
         <Submenu name="use">
           <template slot="title">
             <Icon type="ios-paper" />
             第一版效果篇
           </template>
-          <MenuItem v-for="item in MenuList" :key="item.path" :name="item.path">{{ item.title }}</MenuItem>
+          <MenuGroup title="购买者">
+            <MenuItem name="/Home/Buyer/Store">书城</MenuItem>
+            <MenuItem name="/Home/Buyer/MyCart">我的购物车</MenuItem>
+            <MenuItem name="/Home/Buyer/MyOrder">我的订单</MenuItem>
+          </MenuGroup>
+          <MenuGroup title="管理员">
+            <MenuItem name="/Home/Admin/Book">图书管理</MenuItem>
+            <MenuItem name="/Home/Admin/Cart">购物车管理</MenuItem>
+            <MenuItem name="/Home/Admin/Order">订单管理</MenuItem>
+            <MenuItem name="/Home/Admin/User">用户管理</MenuItem>
+          </MenuGroup>
+          <MenuGroup title="登录与注册">
+            <MenuItem name="/Login">登录</MenuItem>
+            <MenuItem name="/Regist">注册</MenuItem>
+
+          </MenuGroup>
+
+          <!-- <MenuItem v-for="item in MenuList" :key="item.path" :name="item.path">{{ item.title }}</MenuItem> -->
           <!-- <MenuItem to="/Home/Book" name="/Home/Book">书城管理</MenuItem>:to="item.path" -->
         </Submenu>
         <Submenu name="1">
@@ -59,6 +76,7 @@
 export default {
   data() {
     return {
+      currentPath: '',
       username: localStorage.username || '未登录',
       timer: this.CurentTime(),
       MenuList: [
@@ -72,6 +90,8 @@ export default {
     }
   },
   created() {
+    this.currentPath = this.$route.path
+    // console.log(this.$route.path)
     // let intervalId = setInterval(function() {
     //   console.log(4)
     //   this.CurentTime()
@@ -82,10 +102,10 @@ export default {
     bookstroeLogout() {
       this.$axios.post('/home/logout').then(res => {
         console.log('退出登录', res)
-        localStorage.clear()
-        // if (true) {
-
-        // }
+        if (res.data.Msg === '退出成功') {
+          localStorage.clear()
+          this.$router.push('/Login')
+        }
       })
     },
     CurentTime() {

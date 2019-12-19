@@ -10,7 +10,9 @@
           <h3>价格：{{item.Price}}</h3>
           <h3>销量：{{item.Sales}}</h3>
           <h3>库存：{{item.Stock}}</h3>
-          <Button type="primary" @click="addBook2Cart(item.ID)">加入购物车</Button>
+
+          <Button v-show="item.Stock > 0" type="primary" @click="addBook2Cart(item.ID)">加入购物车</Button>
+          <div v-show="item.Stock <= 0" class="replenishment">快马加鞭补货中...</div>
         </div>
       </Card>
     </div>
@@ -44,6 +46,7 @@ export default {
       }
       this.$axios.post('/home/addBook2Cart', postData, PostHeader).then(res => {
         console.log('addBook2Cart', res)
+        this.$Message.success('添加成功')
       })
     },
     changePage(page) {
@@ -75,5 +78,9 @@ export default {
 .storeContain {
   display: flex;
   justify-content: flex-start;
+}
+.replenishment {
+  font-size: 20px;
+  color: red;
 }
 </style>

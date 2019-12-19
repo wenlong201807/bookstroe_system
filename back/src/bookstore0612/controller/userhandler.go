@@ -24,6 +24,16 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		cookie.MaxAge = -1 // 注意区分session的失效
 		// 发给前端，使前端的cookie失效// 将cookie发送给浏览器
 		http.SetCookie(w, cookie)
+
+		// 自定义返回数据格式**如何定义结构体
+		var er commons.StoreResult
+		er.Msg = "退出成功"
+		er.Status = 22
+		// 把结构体转换为json数据
+		b, _ := json.Marshal(er)
+		// 设置响应内容为json
+		w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+		w.Write(b)
 	}
 
 	// 去首页，分页查看图书信息页面***或者返回登录页面

@@ -113,6 +113,10 @@ func GetOrderItemsInfo(w http.ResponseWriter, r *http.Request) {
 	orderItems, _ := dao.GetOrderItemsByOrderID(orderID)
 	fmt.Println("订单详情：", orderItems)
 	// 返回页面展示
+	b, _ := json.Marshal(orderItems)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 获取我的订单
@@ -125,27 +129,51 @@ func GetMyOrders(w http.ResponseWriter, r *http.Request) {
 	orders, _ := dao.GetMyOrders(userID)
 	// 返回给前端展示
 	fmt.Println("获取我的所有的订单orders：", orders)
+	// 返回页面展示
+	b, _ := json.Marshal(orders)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }
 
 // 发货
 func SendOrder(w http.ResponseWriter, r *http.Request)  {
 	// 获取要发货的订单号
 	orderID := r.PostFormValue("orderId")
-	fmt.Println("获取订单号：order ID：",orderID)
+	fmt.Println("发货**获取订单号：order ID：",orderID)
 	// 调用dao中的更新订单的状态的函数
 	dao.UpdateOrderState(orderID,1) // 1为发货2为收货
 	// 返回前端信息
 	// 获取所有订单的信息
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult
+	//er.Data = orders
+	er.Msg = "发货成功"
+	er.Status = 20
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 
 }
 // 收货
 func ReceiveOrder(w http.ResponseWriter, r *http.Request)  {
 	// 获取要收货的订单号
 	orderID := r.PostFormValue("orderId")
-	fmt.Println("获取订单号：order ID：",orderID)
+	fmt.Println("收货**获取订单号：order ID：",orderID)
 	// 调用dao中的更新订单的状态的函数
 	dao.UpdateOrderState(orderID,2) // 1为发货2为收货
 	// 返回前端信息
 	// 获取我的订单信息
-
+	// 自定义返回数据格式**如何定义结构体
+	var er commons.StoreResult // 多了一个*号****没理解到为
+	//er.Data = orders
+	er.Msg = "收货成功"
+	er.Status = 21
+	// 把结构体转换为json数据
+	b, _ := json.Marshal(er)
+	// 设置响应内容为json
+	w.Header().Set(commons.HEADER_CONTENT_TYPE, commons.JSON_HEADER)
+	w.Write(b)
 }

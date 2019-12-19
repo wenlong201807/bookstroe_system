@@ -24,24 +24,44 @@ const router = new Router({
     path: '/Home',
     name: 'Home',
     component: () => import('@/views/Home'),
-    redirect: '/Home/Book',
-    children: [{
-      path: 'Book',
-      name: 'Book',
-      component: () => import('@/views/Book')
-    }, {
-      path: 'Store',
-      name: 'Store',
-      component: () => import('@/views/Store')
-    }, {
-      path: 'Order',
-      name: 'Order',
-      component: () => import('@/views/Order')
-    }, {
-      path: 'Cart',
-      name: 'Cart',
-      component: () => import('@/views/Cart')
-    }]
+    redirect: '/Home/Admin/Book',
+    children: [
+      {
+        path: 'Buyer/Store',
+        name: 'Buyer/Store',
+        component: () => import('@/views/Buyer/Store')
+      },
+      {
+        path: 'Buyer/MyCart',
+        name: 'Buyer/MyCart',
+        component: () => import('@/views/Buyer/MyCart')
+      },
+      {
+        path: 'Buyer/MyOrder',
+        name: 'Buyer/MyOrder',
+        component: () => import('@/views/Buyer/MyOrder')
+      },
+      {
+        path: 'Admin/Book',
+        name: 'Admin/Book',
+        component: () => import('@/views/Admin/Book')
+      },
+      {
+        path: 'Admin/Order',
+        name: 'Admin/Order',
+        component: () => import('@/views/Admin/Order')
+      },
+      {
+        path: 'Admin/Cart',
+        name: 'Admin/Cart',
+        component: () => import('@/views/Admin/Cart')
+      },
+      {
+        path: 'Admin/User',
+        name: 'Admin/User',
+        component: () => import('@/views/Admin/User')
+      }
+    ]
   }, {
     path: '/Login',
     name: 'Login',
