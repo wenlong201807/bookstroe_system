@@ -1,7 +1,5 @@
 package main
 
-import "chat_crawler/base"
-
 func main() {
 
 	//base.Arr()
@@ -28,7 +26,19 @@ func main() {
 	//base.Go_channel4_select()
 	//base.Go_channel5_timeout()
 	//base.Go_channel5_timeout()
-	base.Go_corountine() // 协程的特点
+	//base.Go_corountine() // 协程的特点
+	//base.Json()
+	//base.Md5()
+	//base.HttpServe()
+	//base.Http_get()
+	//base.Http_post()
+	//base.Regexp()
+	//base.SimpleCrawler()
+	//base.MySql()
+	//base.Redis()
+	//base.ChatRoom()
+	//base.ChatRoomClient()
+
 	// 类型和作用在它上面定义的方法必须在同一个包里面定义，
 	// 这就是为什么不能在int，float 或者类似这些的类型上定义方法
 	// 解决方法：使用结构体

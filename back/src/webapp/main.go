@@ -13,7 +13,7 @@ func handler(w http.ResponseWriter,r *http.Request)  {
 func main()  {
 	http.HandleFunc("/http",handler)
 	//创建路由
-	http.ListenAndServe(":8080",nil)
+	http.ListenAndServe("106.54.207.247:8080",nil)
 }
 
 /*
